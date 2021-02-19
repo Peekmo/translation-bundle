@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -45,7 +46,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      * @param AdminInterface $admin
      * @param mixed          $object
      */
-    public function alterNewInstance(AdminInterface $admin, $object)
+    public function alterNewInstance(AdminInterface $admin, object $object): void
     {
         if (!$admin->id($object)) {
             $object->setLocale($this->getEditLocale($admin));
@@ -58,7 +59,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      * @param AdminInterface $admin
      * @param array          $filterValues
      */
-    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
+    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
         if ($this->defaultAdminLocale) {
             $filterValues['locale'] = [
@@ -72,7 +73,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      *
      * @param DatagridMapper $datagridMapper
      */
-    public function configureDatagridFilters(DatagridMapper $datagridMapper)
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper->add('locale', ChoiceFilter::class, [
             'advanced_filter' => false,
@@ -84,7 +85,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
     /**
      * @param ListMapper $listMapper
      */
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         if ($listMapper->has('translations')) {
             $listMapper
@@ -107,13 +108,13 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      * {@inheritdoc}.
      *
      * @param AdminInterface  $admin
-     * @param RouteCollection $collection
+     * @param RouteCollectionInterface $collection
      */
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection)
+    public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
     {
         // Add the tranlate route
         $collection->add('translate', $admin->getRouterIdParameter().'/translate/{newLocale}', [
-            '_controller' => 'UmanitTranslationBundle:TranslatableCRUD:translate',
+            '_controller' => '@umanit_translation.controller.translatable_crudcontroller::translate',
         ]);
     }
 
@@ -123,7 +124,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      * @param AdminInterface $admin
      * @param mixed          $object
      */
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
         // Re-set the locale to make sure the children share the same
         $object->setLocale($object->getLocale());
@@ -138,7 +139,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      * @param string              $action
      * @param AdminInterface|null $childAdmin
      */
-    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, AdminInterface $childAdmin = null): void
     {
         // Add the locales switcher dropdown in the edit view
         if ($action === 'edit' && $admin->id($admin->getSubject())) {

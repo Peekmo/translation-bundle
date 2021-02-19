@@ -7,7 +7,7 @@ use Umanit\TranslationBundle\Doctrine\Model\TranslatableInterface;
 /**
  * @author Arthur Guigand <aguigand@umanit.fr>
  */
-class UmanitTranslationExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class UmanitTranslationExtension extends \Twig\Extension\AbstractExtension implements \Twig\Extension\GlobalsInterface
 {
     /**
      * @var array
@@ -31,7 +31,7 @@ class UmanitTranslationExtension extends \Twig_Extension implements \Twig_Extens
     public function getTests()
     {
         return [
-            new \Twig_SimpleTest('translatable', function ($object) {
+            new \Twig\TwigTest('translatable', function ($object) {
                 return $object instanceof TranslatableInterface;
             }),
         ];
@@ -41,7 +41,7 @@ class UmanitTranslationExtension extends \Twig_Extension implements \Twig_Extens
      * @inheritdoc
      * @return array
      */
-    public function getGlobals()
+    public function getGlobals(): array
     {
         return [
             'locales' => $this->locales,

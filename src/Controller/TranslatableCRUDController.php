@@ -15,7 +15,7 @@ class TranslatableCRUDController extends CRUDController
      *
      * @return RedirectResponse
      */
-    public function translateAction()
+    public function translate()
     {
         $request = $this->getRequest();
 
@@ -35,9 +35,9 @@ class TranslatableCRUDController extends CRUDController
         if (empty($newObject)) {
             $this->admin->checkAccess('edit', $object);
 
-            $newObject = $this->get('umanit_translation.translation.entity_translator')->translate($object, $locale);
-            $this->get('doctrine')->getManager()->persist($newObject);
-            $this->get('doctrine')->getManager()->flush();
+            $newObject = $this->container->get('umanit_translation.translation.entity_translator')->translate($object, $locale);
+            $this->container->get('doctrine')->getManager()->persist($newObject);
+            $this->container->get('doctrine')->getManager()->flush();
 
             $this->addFlash('sonata_flash_success', 'Translated successfully!');
         }
