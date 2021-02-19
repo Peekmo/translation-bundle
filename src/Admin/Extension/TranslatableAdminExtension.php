@@ -114,7 +114,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
     {
         // Add the tranlate route
         $collection->add('translate', $admin->getRouterIdParameter().'/translate/{newLocale}', [
-            '_controller' => '@umanit_translation.controller.translatable_crudcontroller::translate',
+            '_controller' => 'umanit_translation.controller.translatable_crudcontroller::translate',
         ]);
     }
 
