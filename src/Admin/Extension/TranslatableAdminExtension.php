@@ -7,9 +7,8 @@ use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\StringFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -75,10 +74,14 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      */
     public function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
-        $datagridMapper->add('locale', ChoiceFilter::class, [
+        $datagridMapper->add('locale', StringFilter::class, [
             'advanced_filter' => false,
         ], [
-            'choices' => array_combine($this->locales, $this->locales),
+            'global_search' => true,
+            'field_type' => ChoiceType::class,
+            'field_options' => [
+                'choices' => array_combine($this->locales, $this->locales),
+            ]
         ]);
     }
 
@@ -189,3 +192,4 @@ class TranslatableAdminExtension extends AbstractAdminExtension
         return 'en';
     }
 }
+
