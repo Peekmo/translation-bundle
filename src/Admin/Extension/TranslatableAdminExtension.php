@@ -79,6 +79,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
         ], [
             'global_search' => true,
             'field_type' => ChoiceType::class,
+	    'field_name' => 'locale',
             'field_options' => [
                 'choices' => array_combine($this->locales, $this->locales),
             ]
