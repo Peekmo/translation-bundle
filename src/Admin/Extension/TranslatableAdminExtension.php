@@ -178,7 +178,7 @@ class TranslatableAdminExtension extends AbstractAdminExtension
      */
     private function getEditLocale(AdminInterface $admin)
     {
-        if ($admin->getSubject() && $admin->id($admin->getSubject())) {
+        if ($admin->hasSubject() && $admin->id($admin->getSubject())) {
             return $admin->getSubject()->getLocale();
         }
 
