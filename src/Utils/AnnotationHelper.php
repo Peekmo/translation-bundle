@@ -139,4 +139,18 @@ class AnnotationHelper
 
         return null === $columnAnnotation || true === $columnAnnotation->nullable;
     }
+
+    /**
+     * Defines if a sharedAmongstTranslations should be translated or not
+     *
+     * @param \ReflectionProperty $property
+     *
+     * @return bool
+     */
+    public function isSharedTranslated(\ReflectionProperty $property): bool
+    {
+        $annotation = $this->reader->getPropertyAnnotation($property, SharedAmongstTranslations::class);
+
+        return false === $annotation->translate;
+    }
 }

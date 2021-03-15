@@ -105,7 +105,13 @@ class UnidirectionalManyToManyHandler implements TranslationHandlerInterface
         }
 
         foreach ($args->getDataToBeTranslated() as $key => $itemtoBeTrans) {
-            $itemTrans = $this->translator->translate($itemtoBeTrans, $args->getTargetLocale());
+            // Do not translate if shared
+            if ($this->annotationHelper->isSharedTranslated($args->getProperty())) {
+                $itemTrans = $itemtoBeTrans;
+            } else {
+                $itemTrans = $this->translator->translate($itemtoBeTrans, $args->getTargetLocale());
+            }
+
             if (!$collection->contains($itemTrans)) {
                 $collection->add($itemTrans);
             }

@@ -8,4 +8,6 @@ namespace Umanit\TranslationBundle\Doctrine\Annotation;
  */
 class SharedAmongstTranslations
 {
+    /** @var bool */
+    public $translate = true;
 }
